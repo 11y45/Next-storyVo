@@ -1,4 +1,5 @@
 // components/library/StoryGrid.tsx
+// No "use client" — this renders on the server; HTML is in the initial response.
 
 import { Inbox } from "lucide-react";
 import { StoryCard } from "@/components/story/StoryCard";
@@ -31,14 +32,16 @@ export function StoryGrid({ stories, lang }: StoryGridProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {stories.map(({ story, version, lineCount }) => (
+      {stories.map(({ story, version, lineCount }, index) => (
         <StoryCard
           key={story.id}
           slug={story.slug}
           title={story.title}
+          coverImage={story.coverImage}
           version={version}
           language={lang}
           lineCount={lineCount}
+          index={index}
         />
       ))}
     </div>

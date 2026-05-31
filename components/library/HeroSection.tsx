@@ -2,7 +2,10 @@
 "use client";
 
 import { BookOpen, Play, Square, Volume2 } from "lucide-react";
-import { usePreviewPlayer, type PreviewLine } from "@/lib/hooks/usePreviewPlayer";
+import {
+  usePreviewPlayer,
+  type PreviewLine,
+} from "@/lib/hooks/usePreviewPlayer";
 import type { SupportedLang } from "@/types";
 
 // Static preview lines — these are marketing copy, not story data,
@@ -45,8 +48,14 @@ interface HeroSectionProps {
 
 export function HeroSection({ lang }: HeroSectionProps) {
   const lines = PREVIEW_LINES[lang];
-  const { isPlaying, activeLineId, revealedLines, playSingle, togglePlayAll, toggleReveal } =
-    usePreviewPlayer(lang);
+  const {
+    isPlaying,
+    activeLineId,
+    revealedLines,
+    playSingle,
+    togglePlayAll,
+    toggleReveal,
+  } = usePreviewPlayer(lang);
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -59,13 +68,16 @@ export function HeroSection({ lang }: HeroSectionProps) {
           </span>
         </h1>
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-          Beautifully written short stories with sentence-by-sentence translations. Tap any line
-          to reveal its meaning — at your own pace.
+          Beautifully written short stories with sentence-by-sentence
+          translations. Tap any line to reveal its meaning — at your own pace.
         </p>
         <div className="pt-2 flex justify-center lg:justify-start">
-          <button className="bg-[#0f172a] text-white font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-slate-800 transition w-full sm:w-auto">
+          <a
+            href="#library"
+            className="inline-block bg-[#0f172a] text-white font-medium px-6 py-3 rounded-xl shadow-sm hover:bg-slate-800 transition w-full sm:w-auto text-center"
+          >
             Start Reading Free
-          </button>
+          </a>
         </div>
       </div>
 
@@ -82,13 +94,19 @@ export function HeroSection({ lang }: HeroSectionProps) {
                 <span className="block text-[10px] font-semibold text-blue-600 tracking-wider uppercase">
                   Previewing
                 </span>
-                <h4 className="font-bold text-slate-800 text-sm">{PREVIEW_TITLE[lang]}</h4>
+                <h4 className="font-bold text-slate-800 text-sm">
+                  {PREVIEW_TITLE[lang]}
+                </h4>
               </div>
             </div>
             <button
               onClick={() => togglePlayAll(lines)}
               className="bg-blue-600 text-white p-2.5 rounded-full hover:bg-blue-700 transition shadow-md"
-              aria-label={isPlaying || activeLineId !== null ? "Stop preview" : "Play preview"}
+              aria-label={
+                isPlaying || activeLineId !== null
+                  ? "Stop preview"
+                  : "Play preview"
+              }
             >
               {isPlaying || activeLineId !== null ? (
                 <Square className="w-4 h-4 fill-current" />
@@ -140,7 +158,9 @@ export function HeroSection({ lang }: HeroSectionProps) {
                 >
                   <p
                     className={`text-sm font-medium leading-snug wrap-break-word ${
-                      activeLineId === line.id ? "text-blue-800" : "text-slate-800"
+                      activeLineId === line.id
+                        ? "text-blue-800"
+                        : "text-slate-800"
                     }`}
                   >
                     {line.text}

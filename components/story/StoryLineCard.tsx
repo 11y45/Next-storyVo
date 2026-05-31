@@ -1,14 +1,18 @@
+// components/story/StoryLineCard.tsx
 "use client";
 
 import { Play, Volume2 } from "lucide-react";
-import { StoryLine as StoryLineType } from "@/types";
+import type { StoryLine } from "@/types";
 
 interface StoryLineCardProps {
-  line: StoryLineType;
+  line: StoryLine;
   index: number;
+  /** True when the global sequential player is on this line */
   isCurrent: boolean;
+  /** True when this line is playing via its own play button */
+  isSingleActive: boolean;
   isRevealed: boolean;
-  onPlay: (index: number) => void;
+  onPlaySingle: (index: number) => void;
   onToggleReveal: (index: number) => void;
 }
 
@@ -16,29 +20,38 @@ export function StoryLineCard({
   line,
   index,
   isCurrent,
+  isSingleActive,
   isRevealed,
-  onPlay,
+  onPlaySingle,
   onToggleReveal,
 }: StoryLineCardProps) {
+  const isActive = isCurrent || isSingleActive;
+
   return (
     <div
       className={`border rounded-xl p-4 flex items-start gap-4 transition-all duration-200 ${
-        isCurrent
+        isActive
           ? "border-blue-400 bg-blue-50/30 shadow-sm shadow-blue-100"
           : "bg-white border-slate-100 hover:border-slate-200"
       }`}
     >
-      {/* Play button */}
+      {/* Play / stop button — plays this sentence only */}
       <button
-        onClick={() => onPlay(index)}
-        aria-label={`Play sentence ${index + 1}`}
+        onClick={() => onPlaySingle(index)}
+        aria-label={
+          isSingleActive
+            ? `Stop sentence ${index + 1}`
+            : `Play sentence ${index + 1}`
+        }
         className={`mt-0.5 p-2 rounded-lg transition shrink-0 ${
-          isCurrent
+          isActive
             ? "bg-blue-100 text-blue-600"
             : "bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50"
         }`}
       >
-        {isCurrent ? (
+        {isSingleActive ? (
+          <Volume2 className="w-4 h-4 animate-pulse" />
+        ) : isCurrent ? (
           <Volume2 className="w-4 h-4 animate-pulse" />
         ) : (
           <Play className="w-4 h-4 fill-current" />

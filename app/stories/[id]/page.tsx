@@ -10,6 +10,7 @@ import { LevelBadge } from "@/components/ui/LevelBadge";
 import { TipBanner } from "@/components/ui/TipBanner";
 import { StoryReader } from "@/components/story/StoryReader";
 import type { SupportedLang } from "@/types";
+import Image from "next/image";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -62,11 +63,24 @@ export default async function StoryDetailPage({
         Back to Library
       </Link>
 
-      {/* Illustration — replace src with version.coverImage when available */}
+      {/* Illustration */}
       <div className="w-full h-48 sm:h-64 bg-linear-to-br from-emerald-50 to-teal-50/50 border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
-        <span className="text-sm font-medium text-slate-400 tracking-wide">
-          [ Story Illustration ]
-        </span>
+        {story.coverImage ? (
+          <Image
+            src={story.coverImage}
+            alt={story.title}
+            width={800}
+            height={500}
+            unoptimized={story.coverImage.includes("supabase.co")}
+            className="w-full h-48 sm:h-64 object-cover rounded-2xl border border-slate-100 shadow-sm"
+          />
+        ) : (
+          <div className="w-full h-48 sm:h-64 bg-linear-to-br from-emerald-50 to-teal-50/50 border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
+            <span className="text-sm font-medium text-slate-400 tracking-wide">
+              [ Story Illustration ]
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Meta — server-rendered, picked up by crawlers */}

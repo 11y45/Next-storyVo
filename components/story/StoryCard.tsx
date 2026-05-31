@@ -4,29 +4,54 @@
 import Link from "next/link";
 import { AlignLeft, ChevronRight } from "lucide-react";
 import type { StoryListItem } from "@/types";
+import Image from "next/image";
 
 interface StoryCardProps {
   slug: string;
   title: string;
-  /** Omit<LanguageVersion, "lines"> — no lines needed for the card */
+  coverImage: string | null;
   version: StoryListItem["version"];
   language: string;
   lineCount: number;
+  index: number;
 }
 
-export function StoryCard({ slug, title, version, language, lineCount }: StoryCardProps) {
+export function StoryCard({
+  slug,
+  title,
+  coverImage,
+  version,
+  language,
+  lineCount,
+  index,
+}: StoryCardProps) {
   return (
     <Link
       href={`/stories/${slug}?lang=${language}`}
       className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-slate-200 transition flex flex-col group"
     >
       {/* Cover */}
-      <div className="h-40 bg-linear-to-br from-emerald-50 to-teal-50/50 border-b border-slate-100 flex items-center justify-center relative">
-        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wider uppercase text-slate-700">
+      <div className="h-40 border-b border-slate-100 relative overflow-hidden">
+        {coverImage ? (
+          <Image
+            src={coverImage}
+            alt={title}
+            width={800}
+            height={160}
+            unoptimized={coverImage.includes("supabase.co")}
+            priority={index < 3}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-linear-to-br from-emerald-50 to-teal-50/50 flex items-center justify-center">
+            <span className="text-xs font-medium text-slate-400 tracking-wide">
+              [ Cover Image ]
+            </span>
+          </div>
+        )}
+        {/* Level badge — overlaid on top of image or placeholder */}
+        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wider uppercase text-slate-700 shadow-sm">
           {version.meta}
-        </span>
-        <span className="text-xs font-medium text-slate-400 tracking-wide">
-          [ Cover Image Placeholder ]
         </span>
       </div>
 
@@ -36,7 +61,9 @@ export function StoryCard({ slug, title, version, language, lineCount }: StoryCa
           <h3 className="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition">
             {title}
           </h3>
-          <p className="text-sm text-slate-500 mt-1 line-clamp-2">{version.description}</p>
+          <p className="text-sm text-slate-500 mt-1 line-clamp-2">
+            {version.description}
+          </p>
         </div>
         <div className="flex items-center justify-between text-xs font-medium text-slate-400 border-t border-slate-50 pt-3">
           <span className="flex items-center gap-1">

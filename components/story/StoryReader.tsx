@@ -1,7 +1,7 @@
 // components/story/StoryReader.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useAudioPlayer } from "@/lib/useAudioPlayer";
 import { StoryLineCard } from "@/components/story/StoryLineCard";
 import { AudioPlayer } from "@/components/story/AudioPlayer";
@@ -13,13 +13,39 @@ interface StoryReaderProps {
 }
 
 export function StoryReader({ lines, lang }: StoryReaderProps) {
-  const [revealedLines, setRevealedLines] = useState<Record<number, boolean>>({});
+  const [revealedLines, setRevealedLines] = useState<Record<number, boolean>>(
+    {},
+  );
+  const [singleActiveIndex, setSingleActiveIndex] = useState<number | null>(
+    null,
+  );
 
-  const { isPlaying, currentIndex, totalLines, togglePlay, prev, next, goTo, playFromLine } =
+  const { isPlaying, currentIndex, totalLines, togglePlay, prev, next, goTo } =
     useAudioPlayer(lines, lang);
 
   const toggleReveal = (index: number) =>
     setRevealedLines((prev) => ({ ...prev, [index]: !prev[index] }));
+
+  const playSingleLine = useCallback(
+    (index: number) => {
+      if (singleActiveIndex === index) {
+        window.speechSynthesis.cancel();
+        setSingleActiveIndex(null);
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      setSingleActiveIndex(index);
+
+      const utterance = new SpeechSynthesisUtterance(lines[index].text);
+      utterance.lang = lang;
+      utterance.rate = 0.9;
+      utterance.onend = () => setSingleActiveIndex(null);
+
+      window.speechSynthesis.speak(utterance);
+    },
+    [singleActiveIndex, lines, lang],
+  );
 
   return (
     <>
@@ -30,8 +56,9 @@ export function StoryReader({ lines, lang }: StoryReaderProps) {
             line={line}
             index={idx}
             isCurrent={idx === currentIndex && isPlaying}
+            isSingleActive={singleActiveIndex === idx}
             isRevealed={!!revealedLines[idx]}
-            onPlay={playFromLine}
+            onPlaySingle={playSingleLine}
             onToggleReveal={toggleReveal}
           />
         ))}
@@ -41,6 +68,7 @@ export function StoryReader({ lines, lang }: StoryReaderProps) {
         isPlaying={isPlaying}
         currentIndex={currentIndex}
         totalLines={totalLines}
+        isSinglePlaying={singleActiveIndex !== null}
         onTogglePlay={togglePlay}
         onPrev={prev}
         onNext={next}
