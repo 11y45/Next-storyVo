@@ -29,15 +29,15 @@ Storyvo lets learners read short stories in Spanish or French at their CEFR leve
 
 ## 🛠️ Tech Stack
 
-| Tool | Purpose |
-|------|---------|
-| Next.js 16 (App Router) | Full-stack React framework |
-| React 19 | UI library |
-| TypeScript | Type safety across the whole project |
-| Tailwind CSS v4 | Styling |
-| Supabase | PostgreSQL database + JS client |
-| Web Speech API | Browser-native audio narration |
-| Lucide React | Icons |
+| Tool                    | Purpose                              |
+| ----------------------- | ------------------------------------ |
+| Next.js 16 (App Router) | Full-stack React framework           |
+| React 19                | UI library                           |
+| TypeScript              | Type safety across the whole project |
+| Tailwind CSS v4         | Styling                              |
+| Supabase                | PostgreSQL database + JS client      |
+| Web Speech API          | Browser-native audio narration       |
+| Lucide React            | Icons                                |
 
 ---
 
@@ -95,14 +95,14 @@ Storyvo lets learners read short stories in Spanish or French at their CEFR leve
 
 The app ships with 6 stories, each available in both Spanish and French, covering all CEFR levels:
 
-| Title | Level | Theme |
-|-------|-------|-------|
-| My Dog Bruno | A1 | A child's day at the park with his dog |
-| The Little Market | A2 | A girl visits the village market with her grandmother |
-| The Lighthouse Keeper | B1 | An old keeper finds a mysterious bottle on the shore |
-| The Last Train to Sevilla | B2 | A journalist misses her train and meets a retired watchmaker |
-| The Architecture of Silence | C1 | An architect obsessed with designing silence |
-| The Memory Cartographer | C2 | A neuroscientist mapping memories confronts identity and the soul |
+| Title                       | Level | Theme                                                             |
+| --------------------------- | ----- | ----------------------------------------------------------------- |
+| My Dog Bruno                | A1    | A child's day at the park with his dog                            |
+| The Little Market           | A2    | A girl visits the village market with her grandmother             |
+| The Lighthouse Keeper       | B1    | An old keeper finds a mysterious bottle on the shore              |
+| The Last Train to Sevilla   | B2    | A journalist misses her train and meets a retired watchmaker      |
+| The Architecture of Silence | C1    | An architect obsessed with designing silence                      |
+| The Memory Cartographer     | C2    | A neuroscientist mapping memories confronts identity and the soul |
 
 ---
 
@@ -191,45 +191,19 @@ The app will be available at `http://localhost:3000`.
 
 ## 🗺️ Pages & Routes
 
-| Route | Description |
-|-------|-------------|
-| `/` | Library — story grid with language and level filters |
-| `/?lang=fr` | Library filtered to French stories |
-| `/?lang=es&group=B` | Library filtered to Spanish + Intermediate level |
-| `/stories/[slug]` | Story detail page with sentence reader and audio player |
-| `/stories/[slug]?lang=fr` | Same story in French |
+| Route                     | Description                                             |
+| ------------------------- | ------------------------------------------------------- |
+| `/`                       | Library — story grid with language and level filters    |
+| `/?lang=fr`               | Library filtered to French stories                      |
+| `/?lang=es&group=B`       | Library filtered to Spanish + Intermediate level        |
+| `/stories/[slug]`         | Story detail page with sentence reader and audio player |
+| `/stories/[slug]?lang=fr` | Same story in French                                    |
 
 ---
 
 ## 🔊 How the Audio Works
 
 Storyvo uses the browser's built-in **Web Speech API** (`window.speechSynthesis`) — no external audio files or API keys needed. The language is set automatically based on the story (`es-ES` or `fr-FR`), and the speech rate is set to 0.9× for better comprehension. The full-story player and the per-sentence player are mutually exclusive — one stops when the other starts.
-
----
-
-## 🖼️ Screenshots
-
-> 📸 **Add your screenshots here!** The key pages to capture:
-
-| Page | What to show |
-|------|-------------|
-| `Library` | The story grid with level badges and language switcher |
-| `Story Reader` | A story open with one sentence revealed + audio player visible at the bottom |
-
-To add them:
-1. Create a `screenshots/` folder at the project root
-2. Drop your images in and reference them like:
-
-```markdown
-![Library](./screenshots/library.png)
-![Story Reader](./screenshots/reader.png)
-```
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome. To add a new story, insert rows into `stories`, `story_versions`, and `story_lines` in Supabase (or extend `seed.sql`), keeping the same 20-line structure per version.
 
 ---
 
