@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seed:generate": "node supabase/generate-seed.mjs",
     "lint": "eslint"
   },
   "dependencies": {
