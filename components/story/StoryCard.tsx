@@ -38,7 +38,7 @@ export function StoryCard({
             alt={title}
             width={800}
             height={160}
-            unoptimized={coverImage.includes("supabase.co")}
+            unoptimized
             priority={index < 3}
             className="w-full h-full object-cover"
           />

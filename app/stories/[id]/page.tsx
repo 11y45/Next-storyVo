@@ -71,7 +71,7 @@ export default async function StoryDetailPage({
             alt={story.title}
             width={800}
             height={500}
-            unoptimized={story.coverImage.includes("supabase.co")}
+            unoptimized
             className="w-full h-48 sm:h-64 object-cover rounded-2xl border border-slate-100 shadow-sm"
           />
         ) : (
