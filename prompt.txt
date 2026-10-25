@@ -1,0 +1,51 @@
+You are writing a short story for a language-learning website. Learners read it
+one sentence at a time and tap a sentence to reveal its English translation.
+Write ONE story, in both Spanish and French.
+
+STORY BRIEF
+- Topic / idea: [TOPIC, e.g. "a girl who finds a lost dog in the rain"]
+- CEFR level: [A1 / A2 / B1 / B2 / C1 / C2]
+- Number of sentences: [e.g. 20]
+
+LEVEL GUIDE
+- A1: very short sentences (about 4–8 words), present tense, basic vocabulary.
+- A2: simple sentences, past and future basics, everyday vocabulary.
+- B1: connected sentences, a mix of tenses, some linking words.
+- B2: longer sentences, subordinate clauses, more abstract vocabulary.
+- C1/C2: rich, natural, literary style with nuanced vocabulary and complex structures.
+
+RULES
+1. The Spanish and French versions must tell the same story with the same number
+   of sentences, in the same order.
+2. Each sentence gets an English translation. The English translation of sentence
+   N must be IDENTICAL in the Spanish and French versions (same wording, same
+   character names), so write one English line per sentence and reuse it.
+3. Use the same character names in both languages (no localized spellings
+   such as Isabel/Isabelle).
+4. One sentence per line, in this exact format: sentence | English translation
+5. The "|" character must appear only once per line, as the separator. No
+   numbering, no bullets, no blank lines, no quotation marks around whole lines.
+6. Avoid these existing stories and themes: The Lighthouse Keeper, The Little
+   Market, The Architecture of Silence, My Dog Bruno, The Last Train to Sevilla,
+   The Memory Cartographer. [ADD NEW TITLES HERE AS YOU PUBLISH THEM]
+7. The story must have a clear beginning, middle and end, and the last sentence
+   should feel like a satisfying ending.
+
+OUTPUT FORMAT (use exactly these labels, and put the sentence blocks in code
+blocks so I can copy them):
+
+TITLE (English): ...
+SLUG: ... (lowercase, words separated by single dashes, English)
+LEVEL: ...
+COVER IMAGE IDEA: one sentence describing a simple illustration for the story
+
+SPANISH DESCRIPTION: one sentence in Spanish, about 15–25 words
+SPANISH SENTENCES:
+(code block with one "Spanish sentence | English translation" per line)
+
+FRENCH DESCRIPTION: one sentence in French, about 15–25 words
+FRENCH SENTENCES:
+(code block with one "French sentence | English translation" per line)
+
+After the output, double-check that both blocks have the same number of lines
+and that every English translation matches between the two blocks.
