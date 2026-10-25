@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 
 import { fetchStoryBySlug } from "@/lib/actions/stories";
@@ -10,7 +11,6 @@ import { LevelBadge } from "@/components/ui/LevelBadge";
 import { TipBanner } from "@/components/ui/TipBanner";
 import { StoryReader } from "@/components/story/StoryReader";
 import type { SupportedLang } from "@/types";
-import Image from "next/image";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -26,6 +26,7 @@ export async function generateMetadata({
   const { id } = await params;
   const { lang = "es" } = await searchParams;
 
+  // Cached: the page below reuses this result, no second DB round-trip.
   const story = await fetchStoryBySlug(id);
   if (!story) return { title: "Story Not Found — Storyvo" };
 
@@ -63,8 +64,8 @@ export default async function StoryDetailPage({
         Back to Library
       </Link>
 
-      {/* Illustration */}
-      <div className="w-full h-48 sm:h-64 bg-linear-to-br from-emerald-50 to-teal-50/50 border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
+      {/* Illustration — one container, image or placeholder inside */}
+      <div className="w-full h-48 sm:h-64 overflow-hidden rounded-2xl border border-slate-100 shadow-sm bg-linear-to-br from-emerald-50 to-teal-50/50 flex items-center justify-center">
         {story.coverImage ? (
           <Image
             src={story.coverImage}
@@ -72,14 +73,13 @@ export default async function StoryDetailPage({
             width={800}
             height={500}
             unoptimized
-            className="w-full h-48 sm:h-64 object-cover rounded-2xl border border-slate-100 shadow-sm"
+            priority
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-48 sm:h-64 bg-linear-to-br from-emerald-50 to-teal-50/50 border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
-            <span className="text-sm font-medium text-slate-400 tracking-wide">
-              [ Story Illustration ]
-            </span>
-          </div>
+          <span className="text-sm font-medium text-slate-400 tracking-wide">
+            [ Story Illustration ]
+          </span>
         )}
       </div>
 

@@ -13,18 +13,11 @@ export function useAudioPlayer(lines: StoryLine[], lang: string) {
   const isPlayingRef = useRef(false);
   const currentIndexRef = useRef(0);
 
-  const stop = useCallback(() => {
-    window.speechSynthesis.cancel();
-    setIsPlaying(false);
-    isPlayingRef.current = false;
-  }, []);
+  // Holds the latest playSentence. utterance.onend calls it through this ref
+  // so playSentence never has to reference itself while it is being declared.
+  const playSentenceRef = useRef<(index: number) => void>(() => {});
 
   // ─── Core play function ───────────────────────────────────────────────────
-  // playSentence is stable (useCallback with [lines, lang]) so it is safe to
-  // call directly from utterance.onend — no extra ref layer needed.
-  // The previous code computed `next = currentIndexRef.current + 1` inside
-  // onend but then called playNextRef.current() which re-read the ref without
-  // the +1, causing the same sentence to repeat.
   const playSentence = useCallback(
     (index: number) => {
       window.speechSynthesis.cancel();
@@ -47,9 +40,9 @@ export function useAudioPlayer(lines: StoryLine[], lang: string) {
       utterance.onend = () => {
         if (!isPlayingRef.current) return;
 
-        const next = currentIndexRef.current + 1; // ✅ correctly incremented
+        const next = currentIndexRef.current + 1;
         if (next < lines.length) {
-          playSentence(next); // ✅ passed directly — stable ref, no extra layer
+          playSentenceRef.current(next);
         } else {
           // Reached the end
           setIsPlaying(false);
@@ -64,7 +57,18 @@ export function useAudioPlayer(lines: StoryLine[], lang: string) {
     [lines, lang],
   );
 
+  // Keep the ref pointing at the newest playSentence (after each render).
+  useEffect(() => {
+    playSentenceRef.current = playSentence;
+  }, [playSentence]);
+
   // ─── Public controls ──────────────────────────────────────────────────────
+
+  const stop = useCallback(() => {
+    window.speechSynthesis.cancel();
+    setIsPlaying(false);
+    isPlayingRef.current = false;
+  }, []);
 
   const togglePlay = useCallback(() => {
     const next = !isPlayingRef.current;
@@ -88,25 +92,9 @@ export function useAudioPlayer(lines: StoryLine[], lang: string) {
     [lines.length, playSentence],
   );
 
-  const prev = useCallback(
-    () => goTo(currentIndexRef.current - 1),
-    [goTo],
-  );
+  const prev = useCallback(() => goTo(currentIndexRef.current - 1), [goTo]);
 
-  const next = useCallback(
-    () => goTo(currentIndexRef.current + 1),
-    [goTo],
-  );
-
-  /** Start playing from a specific line (e.g. clicking a line's play button). */
-  const playFromLine = useCallback(
-    (index: number) => {
-      setIsPlaying(true);
-      isPlayingRef.current = true;
-      playSentence(index);
-    },
-    [playSentence],
-  );
+  const next = useCallback(() => goTo(currentIndexRef.current + 1), [goTo]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -121,7 +109,6 @@ export function useAudioPlayer(lines: StoryLine[], lang: string) {
     prev,
     next,
     goTo,
-    playFromLine,
     stop,
   };
 }
